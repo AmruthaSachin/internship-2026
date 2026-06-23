@@ -1,20 +1,36 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from .permissions import IsTeacher
+from .permissions import IsTeacher
 
 from .models import Course, CourseContent
 from .serializers import CourseSerializer, CourseContentSerializer
+from .models import Course, CourseContent, Enrollment
+from .serializers import (
+    CourseSerializer,
+    CourseContentSerializer,
+    EnrollmentSerializer
+)
 
 
 class CourseListCreateView(APIView):
 
+    #permission_classes = [IsTeacher]
     def get(self, request):
 
-        courses = Course.objects.all()
+        search = request.GET.get('search')
+
+        if search:
+          courses = Course.objects.filter(
+            title__icontains=search
+          )
+        else:
+           courses = Course.objects.all()
 
         serializer = CourseSerializer(
-            courses,
-            many=True
+        courses,
+        many=True
         )
 
         return Response(serializer.data)
@@ -24,7 +40,9 @@ class CourseListCreateView(APIView):
         serializer = CourseSerializer(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(
+              teacher=request.user
+            )
 
             return Response(
                 serializer.data,
@@ -209,3 +227,36 @@ class CourseContentDetailView(APIView):
                 {"error": "Content not found"},
                 status=status.HTTP_404_NOT_FOUND
             )       
+
+class EnrollmentListCreateView(APIView):
+
+    def get(self, request):
+
+        enrollments = Enrollment.objects.all()
+
+        serializer = EnrollmentSerializer(
+            enrollments,
+            many=True
+        )
+
+        return Response(serializer.data)
+
+    def post(self, request):
+
+        serializer = EnrollmentSerializer(
+            data=request.data
+        )
+
+        if serializer.is_valid():
+
+            serializer.save()
+
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
