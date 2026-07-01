@@ -1,0 +1,169 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:#eef2f7;
+
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.container{
+
+    width:850px;
+
+    margin:50px auto;
+
+    background:white;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    overflow:hidden;
+}
+
+.header{
+
+    background:#790dfd;
+
+    color:white;
+
+    text-align:center;
+
+    padding:30px;
+}
+
+.logo{
+
+    width:90px;
+
+    margin-bottom:10px;
+}
+
+.header h1{
+
+    margin-bottom:8px;
+}
+
+.header p{
+
+    opacity:.9;
+}
+
+.search-section{
+
+    display:flex;
+
+    gap:15px;
+
+    padding:30px;
+}
+
+.search-section input{
+
+    flex:1;
+
+    padding:14px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    font-size:16px;
+}
+
+.search-section input:focus{
+
+    outline:none;
+
+    border-color:#710dfd;
+}
+
+.search-section button{
+
+    padding:14px 25px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    transition:.3s;
+}
+
+.search-section button:hover{
+
+    background:#084ec4;
+}
+
+#results{
+
+    padding:0 30px 30px;
+}
+
+.employee-card{
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    padding:20px;
+
+    margin-top:20px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:.3s;
+}
+
+.employee-card:hover{
+
+    box-shadow:0 3px 12px rgba(0,0,0,.12);
+}
+
+.employee-info h3{
+
+    color:#0d6efd;
+
+    margin-bottom:6px;
+}
+
+.employee-info p{
+
+    color:#666;
+}
+
+.download-btn{
+
+    background:#198754;
+
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:5px;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.download-btn:hover{
+
+    background:#146c43;
+}
