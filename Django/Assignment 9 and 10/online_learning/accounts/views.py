@@ -1,11 +1,15 @@
+import email
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from accounts.models import CustomUser
 
 import random
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.core.mail import send_mail
 from .models import EmailOTP
@@ -64,13 +68,31 @@ class LoginView(APIView):
             )
 
             if user:
-                return Response(
-                    {
-                        "message": "Login successful",
-                        "role": user.role
-                    },
-                    status=status.HTTP_200_OK
+
+                # Delete any old OTP for this email
+                EmailOTP.objects.filter(email=email).delete()
+
+                otp = str(random.randint(100000, 999999))
+
+                EmailOTP.objects.create(
+                email=email,
+                otp=otp
                 )
+
+                send_mail(
+                subject="Your Login OTP",
+                message=f"Your OTP is {otp}",
+                from_email=None,
+                recipient_list=[email],
+                fail_silently=False,
+                )
+
+                return Response(
+            {
+            "message": "OTP sent successfully. Please verify to complete login."
+            },
+             status=status.HTTP_200_OK
+            )
 
             return Response(
                 {"error": "Invalid credentials"},
@@ -150,10 +172,19 @@ class VerifyOTPView(APIView):
 
                 otp_obj.delete()
 
+                user = CustomUser.objects.get(email=email)
+
+                refresh = RefreshToken.for_user(user)
 
                 return Response(
-                    {"message": "OTP verified successfully"}
-                )
+       {
+        "message": "Login successful",
+        "role": user.role,
+        "refresh": str(refresh),
+        "access": str(refresh.access_token)
+       },
+               status=status.HTTP_200_OK
+)
 
             except EmailOTP.DoesNotExist:
 

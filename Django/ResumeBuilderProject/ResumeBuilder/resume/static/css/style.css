@@ -28,7 +28,7 @@ body{
 
 .header{
 
-    background:#790dfd;
+    background:#0d6efd;
 
     color:white;
 
@@ -80,7 +80,7 @@ body{
 
     outline:none;
 
-    border-color:#710dfd;
+    border-color:#0d6efd;
 }
 
 .search-section button{
@@ -150,7 +150,7 @@ body{
 
 .download-btn{
 
-    background:#198754;
+    background:#0d6efd;
 
     color:white;
 
